@@ -1,0 +1,3 @@
+# Habilita a interação dos recursos de API do site ViaCEP com a página de teste
+
+Header Set Access-Control-Allow-Origin "https://viacep.com.br/"

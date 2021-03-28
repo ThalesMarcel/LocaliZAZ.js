@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Script de Compatibilidade para versões antigas do Internet Explorer -->
+    <!--[if lt IE 9]>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+
+    <title>Teste Formulário LocaliZAZ.js</title>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  </head>
+  <body>
+    <h1>Teste Formulário LocaliZAZ.js</h1>
+    <form id="form" action="#" onsubmit="return false">
+      <caption>
+        <p>
+          <strong>ATENÇÃO:</strong> Defina corretamente os valores das constantes de referência ao formulário, e às suas entradas, no arquivo localizaz.js, localizado no diretório src.
+        </p>
+        <p>
+          Valores nulos ou incorretos tornam as entradas, e seus respectivos rótulos, invisíveis e desabilitados na página. As exceções são o ID do formulário e o seletor de Estado (e seu rótulo) que são de presença obrigatória no código HTML.
+        </p>
+        <p>
+          Esta construção permite que os campos do formulário possam ser livremente escolhidos, de acordo com as necessidades de teste do desenvolvedor.
+        </p>
+        <p>
+          Campos marcados com <span><sup>*</sup></span> são de preenchimento obrigatório.
+        </p>
+      </caption>
+
+      <fieldset>
+        <legend>Busca por Estados, Cidades e Aeroportos</legend>
+        <div>
+          <label for="estado" id="lbl_est">Estado/UF<span><sup>*</sup></span>
+          </label>
+          <select name="estado" id="estado" required="true"></select>
+        </div>
+        <div>
+          <label for="cod_estado" id="lbl_cod_est" hidden disabled="true">
+            Código IBGE do Estado</label>
+          <input type="number" name="cod_estado" id="cod_estado" readonly="true"
+                 hidden disabled="true">
+        </div>
+
+        <div>
+          <label for="cidade" id="lbl_cid" hidden disabled="true">Cidade</label>
+          <select name="cidade" id="cidade" hidden disabled="true"></select>
+        </div>
+        <div>
+          <label for="cod_cidade"id="lbl_cod_cid" hidden disabled="true">
+            Código IBGE da Cidade</label>
+          <input type="number" name="cod_cidade" id="cod_cidade" readonly="true"
+                 hidden disabled="true">
+        </div>
+        <div>
+          <label for="aeroporto"id="lbl_aero" hidden disabled="true">Aeroporto(s) existente(s)</label>
+          <select name="aeroporto" id="aeroporto" hidden disabled="true">
+          </select>
+        </div>
+        <div><textarea name="lz_res" id="lz_res" cols="110" rows="15"
+                       readonly="true" hidden disabled="true"></textarea></div>
+      </fieldset>
+
+      <fieldset id="BuscaCEP" hidden disabled="true">
+        <legend>Busca por CEP</legend>
+        <div>
+          <label for="cep" id="lbl_cep">CEP<span><sup>*</sup></span></label>
+          <input type="text" name="cep" id="cep" minlength="8" maxlength="10">
+        </div>
+        <div><textarea name="result_cep" id="result_cep" cols="110" rows="14"
+                       readonly="true" hidden disabled="true"></textarea></div>
+      </fieldset>
+
+      <button id="resultados">Ver resultados</button>
+      <button id="recarrega">Recarregar a página</button>
+    </form>
+
+    <script type="text/javascript" src="/src/localizaz.js"></script>
+  </body>
+</html>

@@ -1,0 +1,37 @@
+:root {  font-size: 1rem;  }
+
+html {
+  box-sizing: border-box; /* uso do Box Model alternativo em toda a página */
+  color: #2d2d2d;
+  background-color: #fdfdfd;
+  font-family: sans-serif;
+  font-weight: normal;
+  text-align: justify;
+  margin: 0 5%;
+}
+
+/* faz com que TODOS os elementos herdem o Box Model alternativo */
+*, *::before, *::after {  box-sizing: inherit;  }
+
+h1 {
+  font-style: italic;
+  font-weight: bold;
+  text-align: center;
+}
+
+p {  text-indent: 2rem;  }
+
+form {
+  border: #323232 double;
+  padding: 0.5rem;
+}
+
+span {
+  color: red;
+  font-weight: bold;
+  
+}
+
+fieldset, div {  margin: 2rem 0;  }
+
+div {  margin-left: 1.15rem;  }
