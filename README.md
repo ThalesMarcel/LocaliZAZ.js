@@ -35,9 +35,9 @@ Basta abrir o script **localizaz.js**, no diretório **src**, e alterar os valor
 ```
 const formulario = "form"; /** Valor original: "form" */
 const select_estado = "estado"; /** Valor original: "estado" */
-const select_cidade = null; /** Valor original: "cidade" */
+const select_cidade = "cidade"; /** Valor original: "cidade" */
 const input_cod_estado = "cod_estado"; /** Valor original: "cod_estado" */
-const input_cod_cidade = null; /** Valor original: "cod_cidade" */
+const input_cod_cidade = "cod_cidade"; /** Valor original: "cod_cidade" */
 const select_aeroporto = "aeroporto"; /** Valor original: "aeroporto" */
 const txtarea_localizaz_res = "lz_res"; /** Valor original: "lz_res" */
 const fieldset_cep = "BuscaCEP"; /** Valor original: "BuscaCEP" */
