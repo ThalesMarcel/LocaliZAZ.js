@@ -1,5 +1,5 @@
 /**
- ****************************** LocaliZAZ.js ******************************
+ ******************************** LocaliZAZ.js *********************************
  *
  * 	O LocaliZAZ é uma biblioteca JavaScript para listar estados, cidades e
  * aeroportos brasileiros, juntamente com seus códigos numéricos, segundo o
@@ -27,7 +27,7 @@
  * 	O LocaliZAZ NÃO tem ABSOLUTAMENTE NENHUMA GARANTIA.
  *
  * 	Este é um software livre e você pode redistribuí-lo sob certas condições;
- * para obter detalhes, leia o arquivo LICENSE. *
+ * para obter detalhes, leia o arquivo LICENSE.
  *
  *
  * 	Reescrito e reorganizado por Thales Marcel Souza Silva (em andamento...).
@@ -142,9 +142,9 @@ function inicializa_Estado() {
 	/**
 	 * 	Esse comportamento do log do console JavaScript se repete nas funções de
 	 * inicialização das demais entradas do formulário.
-	 * 	Porém, caso alguma das demais entradas não exista (ou o ID esteja
-	 * incorreto), no lugar do registro de erro no console JavaScript, será
-	 * registrado um aviso (warn/warning).
+	 * 	Porém, caso alguma delas não exista (ou o ID esteja incorreto), no lugar
+	 * do registro de erro no console JavaScript, será registrado um aviso
+	 * (warn/warning).
 	 * 	Essa mudança ocorre em função das demais entradas não serem de presença
 	 * obrigatória no formulário, para que haja liberdade na escolha das mesmas
 	 * pelo desenvolvedor, dependendo do contexto de aplicação do formulário.
@@ -156,6 +156,7 @@ function inicializa_Estado() {
  * seu conteúdo é limpo. A caixa e seu rótulo tornam-se visíveis na página.
  */
 function inicializa_Cod_Estado() {
+	/** Rótulo da caixa de texto de código IBGE de Estado */
 	const lce = document.getElementById("lbl_cod_est");
 
 	if (_cod_estado) {
@@ -178,6 +179,7 @@ function inicializa_Cod_Estado() {
  * página.
  */
 function inicializa_Cidade() {
+	/** Rótulo do seletor de cidade */
 	const lc = document.getElementById("lbl_cid");
 
 	if (_cidade) {
@@ -199,6 +201,7 @@ function inicializa_Cidade() {
  * conteúdo é limpo. A caixa e seu rótulo tornam-se visíveis na página.
 */
 function inicializa_Cod_Cidade() {
+	/** Rótulo da caixa de texto de código IBGE de cidade */
 	const lcc = document.getElementById("lbl_cod_cid");
 
 	if (_cod_cidade) {
@@ -220,6 +223,7 @@ function inicializa_Cod_Cidade() {
  * limpas. O seletor e seu rótulo tornam-se visíveis na página.
  */
 function inicializa_Aeroportos() {
+	/** Rótulo do seletor de aeroportos */
 	const la = document.getElementById("lbl_aero");
 
 	if (_aeroporto) {
@@ -246,12 +250,17 @@ function inicializa_CEP() {
 		_BuscaCEP.removeAttribute("hidden");
 		_BuscaCEP.removeAttribute("disabled");
 
-		_cep.setAttribute("required", "true");
+		_cep.setAttribute("required", "required");
 		_cep.innerHTML = "";
 
 		console.log('[JS] LocaliZAZ - v2.0.1.0: Caixa de texto CEP presente na página');
 	} else {
-		console.warn('[JS] LocaliZAZ - v2.0.1.0: STATUS [AVISO: A caixa de texto de CEP não está presente no código HTML da página. Verifique se o ID informado na constante "input_cep" está correto, caso pretenda utilizá-lo.]');
+		if(!_BuscaCEP) {
+			console.error('[JS] LocaliZAZ - v2.0.1.0: STATUS [ERRO: O fieldset BuscaCEP não está presente no código HTML da página. Verifique se o ID informado na constante "fieldset_cep" está correto.]');
+		}
+		if(!_cep) {
+			console.warn('[JS] LocaliZAZ - v2.0.1.0: STATUS [AVISO: A caixa de texto de CEP não está presente no código HTML da página. Verifique se o ID informado na constante "input_cep" está correto, caso pretenda utilizá-la.]');
+		}
 	}
 }
 
@@ -274,6 +283,7 @@ function inicializa() {
 */
 window.onload = function () { inicializa() };
 window.onbeforeunload = function () { _formulario.reset() };
+
 
 /** Preenche as entradas do formulário, de acordo com o Estado selecionado */
 function altera_Estado() {
@@ -335,11 +345,9 @@ function altera_Estado() {
 */
 _estado.onchange = function () { altera_Estado() };
 
+
 /** Preenche as entradas do formulário, de acordo com a cidade selecionada */
 function altera_Cidade() {
-	/** limpa as opções do seletor de aeroportos */
-	if (_aeroporto) _aeroporto.innerHTML = '';
-
 	/** Índice do estado selecionado no array "estados" */
 	let estado_selecionado = _estado.selectedIndex;
 	/** Índice da cidade selecionada no array "cidades" */
@@ -378,6 +386,7 @@ function altera_Cidade() {
 */
 if (_cidade) _cidade.onchange = function () { altera_Cidade() };
 
+
 /**
  * 	Esta função torna visível e habilita a área de texto
  * "txtarea_localizaz_res" para receber os dados obtidos pelas funções
@@ -402,12 +411,13 @@ function resultados_LocaliZAZ() {
 
 		if (_cod_cidade) _localizaz_res.value += "\tCódigo da cidade selecionada: " + _cod_cidade.value + "\n\n";
 
-		if (_aeroporto) _localizaz_res.value += "\tAeroporto selecionado: " + _aeroporto.value;
+		if (_aeroporto && _aeroporto.value) _localizaz_res.value += "\tCódigo IATA do aeroporto selecionado: " + _aeroporto.value;
 	} else {
 		_localizaz_res.setAttribute("hidden", "hidden");
-		_localizaz_res.setAttribute("disabled", "true");
+		_localizaz_res.setAttribute("disabled", "disabled");
 	}
 }
+
 
 /**
  * 	Se a caixa de texto de CEP estiver presente na página, e possuir algum
@@ -494,7 +504,7 @@ function busca_Dados_CEP() {
 		request.send();
 	} else {
 		_buscacep_res.setAttribute("hidden", "hidden");
-		_buscacep_res.setAttribute("disabled", "true");
+		_buscacep_res.setAttribute("disabled", "disabled");
 	}
 }
 

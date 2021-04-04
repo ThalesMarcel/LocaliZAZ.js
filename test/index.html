@@ -18,9 +18,15 @@
   <body>
     <h1>Teste Formulário LocaliZAZ.js</h1>
     <form id="form" action="#" onsubmit="return false">
+    <!--
+        action="#" faz com que o formulário envie os dados obtidos para esta
+      própria página.
+        onsubmit="return false" impede a atualização da página na submissão do
+      formulário (clique no botão "Ver resultados").
+    -->
       <caption>
         <p>
-          <strong>ATENÇÃO:</strong> Defina corretamente os valores das constantes de referência ao formulário, e às suas entradas, no arquivo localizaz.js, localizado no diretório src.
+          <strong><u>ATENÇÃO:</u></strong> Defina corretamente os valores das constantes de referência ao formulário, e às suas entradas, no arquivo <strong>localizaz.js</strong>, localizado no diretório <strong>src</strong>.
         </p>
         <p>
           Valores nulos ou incorretos tornam as entradas, e seus respectivos rótulos, invisíveis e desabilitados na página. As exceções são o ID do formulário e o seletor de Estado (e seu rótulo) que são de presença obrigatória no código HTML.
@@ -29,51 +35,51 @@
           Esta construção permite que os campos do formulário possam ser livremente escolhidos, de acordo com as necessidades de teste do desenvolvedor.
         </p>
         <p>
-          Campos marcados com <span><sup>*</sup></span> são de preenchimento obrigatório.
+          Campos marcados com <sup>*</sup> são de preenchimento obrigatório.
         </p>
       </caption>
 
       <fieldset>
-        <legend>Busca por Estados, Cidades e Aeroportos</legend>
+        <legend>Busca por Estados, Cidades e/ou Aeroportos</legend>
         <div>
-          <label for="estado" id="lbl_est">Estado/UF<span><sup>*</sup></span>
+          <label for="estado" id="lbl_est">Estado/UF<sup>*</sup>
           </label>
-          <select name="estado" id="estado" required="true"></select>
+          <select name="estado" id="estado" required></select>
         </div>
         <div>
-          <label for="cod_estado" id="lbl_cod_est" hidden disabled="true">
+          <label for="cod_estado" id="lbl_cod_est" hidden disabled>
             Código IBGE do Estado</label>
-          <input type="number" name="cod_estado" id="cod_estado" readonly="true"
-                 hidden disabled="true">
+          <input type="number" name="cod_estado" id="cod_estado" readonly hidden
+                 disabled>
         </div>
 
         <div>
-          <label for="cidade" id="lbl_cid" hidden disabled="true">Cidade</label>
-          <select name="cidade" id="cidade" hidden disabled="true"></select>
+          <label for="cidade" id="lbl_cid" hidden disabled>Cidade</label>
+          <select name="cidade" id="cidade" hidden disabled></select>
         </div>
         <div>
-          <label for="cod_cidade"id="lbl_cod_cid" hidden disabled="true">
+          <label for="cod_cidade"id="lbl_cod_cid" hidden disabled>
             Código IBGE da Cidade</label>
-          <input type="number" name="cod_cidade" id="cod_cidade" readonly="true"
-                 hidden disabled="true">
+          <input type="number" name="cod_cidade" id="cod_cidade" readonly hidden
+                 disabled>
         </div>
         <div>
-          <label for="aeroporto"id="lbl_aero" hidden disabled="true">Aeroporto(s) existente(s)</label>
-          <select name="aeroporto" id="aeroporto" hidden disabled="true">
+          <label for="aeroporto"id="lbl_aero" hidden disabled>Aeroporto(s) existente(s)</label>
+          <select name="aeroporto" id="aeroporto" hidden disabled>
           </select>
         </div>
-        <div><textarea name="lz_res" id="lz_res" cols="110" rows="15"
-                       readonly="true" hidden disabled="true"></textarea></div>
+        <div><textarea name="lz_res" id="lz_res" cols="110" rows="15" readonly
+                       hidden disabled></textarea></div>
       </fieldset>
 
-      <fieldset id="BuscaCEP" hidden disabled="true">
+      <fieldset id="BuscaCEP" hidden disabled>
         <legend>Busca por CEP</legend>
         <div>
-          <label for="cep" id="lbl_cep">CEP<span><sup>*</sup></span></label>
+          <label for="cep" id="lbl_cep">CEP<sup>*</sup></label>
           <input type="text" name="cep" id="cep" minlength="8" maxlength="10">
         </div>
         <div><textarea name="result_cep" id="result_cep" cols="110" rows="14"
-                       readonly="true" hidden disabled="true"></textarea></div>
+                       readonly hidden disabled></textarea></div>
       </fieldset>
 
       <button id="resultados">Ver resultados</button>

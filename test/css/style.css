@@ -21,15 +21,14 @@ h1 {
 
 p {  text-indent: 2rem;  }
 
+sup {
+  color: red;
+  font-weight: bold;
+}
+
 form {
   border: #323232 double;
   padding: 0.5rem;
-}
-
-span {
-  color: red;
-  font-weight: bold;
-  
 }
 
 fieldset, div {  margin: 2rem 0;  }
