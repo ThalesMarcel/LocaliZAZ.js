@@ -26,13 +26,13 @@
     -->
       <caption>
         <p>
-          <strong><u>ATENÇÃO:</u></strong> Defina corretamente os valores das constantes de referência ao formulário, e às suas entradas, no arquivo <strong>localizaz.js</strong>, localizado no diretório <strong>src</strong>.
+          <strong><u>ATENÇÃO:</u></strong> Defina corretamente os valores das constantes de referência ao formulário, e às suas entradas, no arquivo <strong>localizaz.test.js</strong>, localizado no diretório <strong>test/js</strong>.
         </p>
         <p>
-          Valores nulos ou incorretos tornam as entradas, e seus respectivos rótulos, invisíveis e desabilitados na página. As exceções são o ID do formulário e o seletor de Estado (e seu rótulo) que são de presença obrigatória no código HTML.
+          Valores nulos ou incorretos tornam as entradas, e seus respectivos rótulos (caso existam), invisíveis e desabilitados na página. As exceções são o ID do formulário e o seletor de Estado (e seu rótulo) que são de presença obrigatória no código HTML.
         </p>
         <p>
-          Esta construção permite que os campos do formulário possam ser livremente escolhidos, de acordo com as necessidades de teste do desenvolvedor.
+          Esta construção permite que os campos e botões do formulário possam ser livremente escolhidos, de acordo com as necessidades de teste do desenvolvedor.
         </p>
         <p>
           Campos marcados com <sup>*</sup> são de preenchimento obrigatório.
@@ -82,10 +82,10 @@
                        readonly hidden disabled></textarea></div>
       </fieldset>
 
-      <button id="resultados">Ver resultados</button>
-      <button id="recarrega">Recarregar a página</button>
+      <button id="resultados" hidden disabled>Ver resultados</button>
+      <button id="recarrega" hidden disabled>Recarregar a página</button>
     </form>
 
-    <script type="text/javascript" src="/src/localizaz.js"></script>
+    <script type="text/javascript" src="js/localizaz.test.js"></script>
   </body>
 </html>

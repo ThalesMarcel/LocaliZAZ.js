@@ -1,6 +1,8 @@
 /**
  ******************************** LocaliZAZ.js *********************************
  *
+ ******* VERSÃO DE TESTE (USE O SCRIPT /src/localizaz.js PARA PRODUÇÃO) ********
+ *
  * 	O LocaliZAZ é uma biblioteca JavaScript para listar estados, cidades e
  * aeroportos brasileiros, juntamente com seus códigos numéricos, segundo o
  * IBGE.
@@ -78,8 +80,12 @@ const select_cidade = "cidade"; /** Valor original: "cidade" */
 const input_cod_estado = "cod_estado"; /** Valor original: "cod_estado" */
 const input_cod_cidade = "cod_cidade"; /** Valor original: "cod_cidade" */
 const select_aeroporto = "aeroporto"; /** Valor original: "aeroporto" */
+const txtarea_localizaz_res = "lz_res"; /** Valor original: "lz_res" */
 const fieldset_cep = "BuscaCEP"; /** Valor original: "BuscaCEP" */
 const input_cep = "cep"; /** Valor original: "cep" */
+const txtarea_buscacep_res = "result_cep"; /** Valor original: "result_cep" */
+const btn_resultados = "resultados"; /** Valor original: "resultados" */
+const btn_recarrega = "recarrega"; /** Valor original: "recarrega" */
 
 
 /**
@@ -95,8 +101,12 @@ const _cidade = document.getElementById(select_cidade);
 const _cod_estado = document.getElementById(input_cod_estado);
 const _cod_cidade = document.getElementById(input_cod_cidade);
 const _aeroporto = document.getElementById(select_aeroporto);
+const _localizaz_res = document.getElementById(txtarea_localizaz_res);
 const _BuscaCEP = document.getElementById(fieldset_cep);
 const _cep = document.getElementById(input_cep);
+const _buscacep_res = document.getElementById(txtarea_buscacep_res);
+const _resultados = document.getElementById(btn_resultados);
+const _recarrega = document.getElementById(btn_recarrega);
 
 
 // ************************* INICIALIZAÇÃO DO SCRIPT ************************ //
@@ -242,7 +252,7 @@ function inicializa_CEP() {
 		_cep.setAttribute("required", "required");
 		_cep.innerHTML = "";
 
-		console.log('[JS] LocaliZAZ - v2.0.1.0: Fieldset BuscaCEP e caixa de texto de CEP presentes na página');
+		console.log('[JS] LocaliZAZ - v2.0.1.0: Fieldset BuscaCEP e caixa de texto CEP presentes na página');
 	} else {
 		if(!_BuscaCEP) {
 			console.warn('[JS] LocaliZAZ - v2.0.1.0: STATUS [AVISO: O fieldset BuscaCEP não está presente no código HTML da página. Verifique se o ID informado na constante "fieldset_cep" está correto, caso pretenda testar o recurso de busca por CEP.]');
@@ -253,6 +263,26 @@ function inicializa_CEP() {
 	}
 }
 
+function inicializa_Botoes() {
+	if(_resultados) {
+		_resultados.removeAttribute("hidden");
+		_resultados.removeAttribute("disabled");
+
+		console.log('[JS] LocaliZAZ - v2.0.1.0: Botão de exibição de resultados presente na página.');
+	} else {
+		console.warn('[JS] LocaliZAZ - v2.0.1.0: STATUS [AVISO: O botão de exibição de resultados não está presente no código HTML da página. Verifique se o ID informado na constante "btn_resultados" está correto, caso pretenda exibir os resultados da execução deste script em seu teste.]');
+	}
+
+	if(_recarrega) {
+		_recarrega.removeAttribute("hidden");
+		_recarrega.removeAttribute("disabled");
+
+		console.log('[JS] LocaliZAZ - v2.0.1.0: Botão de recarregamento presente na página.');
+	} else {
+		console.warn('[JS] LocaliZAZ - v2.0.1.0: STATUS [AVISO: O botão de recarregamento não está presente no código HTML da página. Verifique se o ID informado na constante "btn_recarrega" está correto, caso pretenda ter um botão de recarregamento da página em seu teste.]');
+	}
+}
+
 function inicializa() {
 	inicializa_Estado();
 	inicializa_Cod_Estado();
@@ -260,6 +290,7 @@ function inicializa() {
 	inicializa_Cod_Cidade();
 	inicializa_Aeroportos();
 	inicializa_CEP();
+	inicializa_Botoes();
 }
 
 /**
@@ -267,8 +298,9 @@ function inicializa() {
  * "Ctrl + F5", que ignora o cache do navegador), as entradas de formulário
  * recebem seus devidos valores iniciais, através do primeiro comando abaixo.
  * 	Quando a página é recarregada pelo comando "F5" (ou pelo botão "Atualizar"
- * na interface do navegador), as entradas de formulário são resetadas pelo
- * segundo comando abaixo.
+ * na interface do navegador, ou ainda pelo botão do formulário "Recarregar a
+ * página" ), as entradas de formulário são resetadas pelo segundo comando
+ * abaixo.
 */
 window.onload = function () { inicializa() };
 window.onbeforeunload = function () { _formulario.reset() };
@@ -377,9 +409,47 @@ if (_cidade) _cidade.onchange = function () { altera_Cidade() };
 
 
 /**
+ * 	Esta função torna visível e habilita a área de texto
+ * "txtarea_localizaz_res" para receber os dados obtidos pelas funções
+ * "altera_Estado" e "altera_Cidade".
+ * 	Caso a opção inicial (Selecione um Estado) volte a ser selecionada,
+ * "txtarea_localizaz_res" torna-se oculta e desabilitada novamente.
+*/
+function resultados_LocaliZAZ() {
+	if(_localizaz_res) {
+		_localizaz_res.innerHTML = "";
+
+		if (_estado.selectedIndex !== 0) {
+			_localizaz_res.removeAttribute("hidden");
+			_localizaz_res.removeAttribute("disabled");
+
+			_localizaz_res.value = "\n\tDados obtidos pelo LocaliZAZ.js:\n\n\n\n";
+
+			_localizaz_res.value += "\tEstado selecionado: " + _estado.value + "\n\n";
+
+			if (_cod_estado) _localizaz_res.value += "\tCódigo do Estado selecionado: " + _cod_estado.value + "\n\n";
+
+			if (_cidade) _localizaz_res.value += "\tCidade selecionada: " + _cidade.value + "\n\n";
+
+			if (_cod_cidade) _localizaz_res.value += "\tCódigo da cidade selecionada: " + _cod_cidade.value + "\n\n";
+
+			if (_aeroporto && _aeroporto.value) _localizaz_res.value += "\tCódigo IATA do aeroporto selecionado: " + _aeroporto.value;
+		} else {
+			_localizaz_res.setAttribute("hidden", "hidden");
+			_localizaz_res.setAttribute("disabled", "disabled");
+		}
+	} else {
+		console.error('[JS] LocaliZAZ - v2.0.1.0: STATUS [ERRO: A área de texto "_localizaz_res" não foi localizada. Verifique se o ID informado na constante "txtarea_localizaz_res" está correto, caso queira exibir os resultados do preenchimento do formulário LocaliZAZ.]');
+	}
+}
+
+
+/**
  * 	Se a caixa de texto de CEP estiver presente na página, e possuir algum
- * valor, a busca por CEP acontece, e o processamento dos dados retornados fica
- * a critério do desenvolvedor.
+ * valor, a busca por CEP acontece, a área de texto "txtarea_buscacep_res"
+ * torna-se visível, é limpa e recebe o retorno da busca.
+ * 	Caso a caixa de texto de CEP seja limpa após uma busca bem sucedida,
+ * "txtarea_buscacep_res" torna-se oculta e desabilitada novamente.
  *
  *********************************** AVISO!!! **********************************
  *******************************************************************************
@@ -391,51 +461,98 @@ function busca_Dados_CEP() {
 	let request; /** recebe os dados da requisição XHR */
 	let retorno; /** recebe o resultado final do XHR em formato JSON */
 
-	if (_cep && _cep.value) {
-		request = new XMLHttpRequest(); /** inicialização do XHR */
+	if(_buscacep_res) {
+		if (_cep && _cep.value) {
+			_buscacep_res.removeAttribute("hidden");
+			_buscacep_res.removeAttribute("disabled");
 
-		/**
-		 * 	URL para GET request direta, utilizando a API do ViaCEP, processo feito
-		 * em XHR para suporte a navegadores IE8+.
-		*/
-		request.open('GET', 'https://viacep.com.br/ws/' + _cep.value.toString() + '/json/', true);
-		/** suporte para navegadores modernos. */
-		request.responseType = "json";
-		/** suporte para navegadores antigos. (IE 11 -) */
-		request.overrideMimeType("application/json");
-		request.onloadend = function () {
-			retorno = JSON.parse(JSON.stringify(request.response));
+			request = new XMLHttpRequest(); /** inicialização do XHR */
 
-			/*----- Seleciona opções derivadas ------ (DESCOMENTE PARA UTILIZAR) -----
-				document.getElementById(select_estado).value = retorno.uf;
-				muda_estado();//executa mudança de estado
-				document.getElementById(select_cidade).value = retorno.localidade;
-				muda_cidade();//executa mudança de cidade
-			----------------------------------------------------------------------- */
-
-
-
-			// _______PROGRAME___AQUI___O___DESTINO___DOS___DADOS___RECEBIDOS______ //
-
-			/*	--------------------------
-			Você pode obter os seguintes dados utilizando outros Objetos do JSON retornados:
-			--------------------------
-			- retorno.logradouro: Endereço do CEP digitado,
-			- retorno.bairro: Bairro do CEP digitado,
-			- retorno.cep: CEP formatado contendo apenas números e traço,
-			- retorno.complemento: Complemento do CEP digitado (Endereço),
-			- retorno.localidade: Cidade do CEP digitado,
-			- retorno.uf: Estado do CEP digitado,
-			- retorno.ibge: Código do IBGE referente a Cidade,
-			- retorno.gia: GIA/ICMS da cidade/região onde se localiza o CEP,
-			- retorno.ddd: DDD da cidade/região onde se localiza o CEP,
-			- retorno.siafi: Código da Cidade S.I.A.F.I (Sistema Integrado de Administração Financeira) da cidade/região onde se localiza o CEP.
+			/**
+			 * 	URL para GET request direta, utilizando a API do ViaCEP, processo feito
+			 * em XHR para suporte a navegadores IE8+.
 			*/
-		};
+			request.open('GET', 'https://viacep.com.br/ws/' + _cep.value.toString() + '/json/', true);
+			/** suporte para navegadores modernos. */
+			request.responseType = "json";
+			/** suporte para navegadores antigos. (IE 11 -) */
+			request.overrideMimeType("application/json");
+			request.onloadend = function () {
+				retorno = JSON.parse(JSON.stringify(request.response));
 
-		request.send();
+				/*----- Seleciona opções derivadas ------ (DESCOMENTE PARA UTILIZAR) -----
+					document.getElementById(select_estado).value = retorno.uf;
+					muda_estado();//executa mudança de estado
+					document.getElementById(select_cidade).value = retorno.localidade;
+					muda_cidade();//executa mudança de cidade
+				----------------------------------------------------------------------- */
+
+
+
+				// _______PROGRAME___AQUI___O___DESTINO___DOS___DADOS___RECEBIDOS______ //
+
+				/** limpeza da área de texto "_buscacep_res" */
+				_buscacep_res.innerHTML = "";
+
+				/**
+				 * 	Se a busca retorna sem erro (ou seja, quando a busca é feita com um
+				 * CEP válido), o resultado é adicionado na área de texto "_buscacep_res".
+				*/
+				if (!retorno.erro) {
+					_buscacep_res.value = "\n\tResultados da busca por CEP:\n\n\n";
+					_buscacep_res.value += "\tLogradouro: " + retorno.logradouro + "\n\n";
+					_buscacep_res.value += "\tBairro: " + retorno.bairro + "\n\n";
+					_buscacep_res.value += "\tCidade (Localidade): " + retorno.localidade + "\n\n";
+					_buscacep_res.value += "\tEstado (UF): " + retorno.uf + "\n\n";
+					_buscacep_res.value += "\tDDD: " + retorno.ddd;
+					/** Caso contrário, exibe em "_buscacep_res" a mensagem abaixo. */
+				} else {
+					_buscacep_res.value = "\n\tO CEP informado não é válido!!!\n\n";
+					_buscacep_res.value += "\tPor favor, tente informar um CEP correto."
+				}
+
+
+				/*	--------------------------
+				Você pode obter os seguintes dados utilizando outros Objetos do JSON retornados:
+				--------------------------
+				- retorno.logradouro: Endereço do CEP digitado,
+				- retorno.bairro: Bairro do CEP digitado,
+				- retorno.cep: CEP formatado contendo apenas números e traço,
+				- retorno.complemento: Complemento do CEP digitado (Endereço),
+				- retorno.localidade: Cidade do CEP digitado,
+				- retorno.uf: Estado do CEP digitado,
+				- retorno.ibge: Código do IBGE referente a Cidade,
+				- retorno.gia: GIA/ICMS da cidade/região onde se localiza o CEP,
+				- retorno.ddd: DDD da cidade/região onde se localiza o CEP,
+				- retorno.siafi: Código da Cidade S.I.A.F.I (Sistema Integrado de Administração Financeira) da cidade/região onde se localiza o CEP.
+				*/
+			};
+
+			request.send();
+		} else {
+			_buscacep_res.setAttribute("hidden", "hidden");
+			_buscacep_res.setAttribute("disabled", "disabled");
+		}
+	} else {
+		console.error('[JS] LocaliZAZ - v2.0.1.0: STATUS [ERRO: A área de texto "_buscacep_res" não foi localizada. Verifique se o ID informado na constante "txtarea_localizaz_res" está correto, caso queira exibir os resultados da busca por CEP.]');
 	}
 }
+
+/**
+ * 	Quando o botão "resultados" está presente na página e é clicado, a página
+ * recebe os resultados das funções "resultados_LocaliZAZ" e "busca_Dados_CEP",
+ * caso as áreas de texto correspondentes estejam presentes na página.
+*/
+if(_resultados)	_resultados.onclick = function () {
+		resultados_LocaliZAZ();
+		busca_Dados_CEP();
+};
+
+/**
+ * 	Quando o botão "recarrega" está presente na página e é clicado, a página é
+ * recarregada.
+*/
+if(_recarrega)	_recarrega.onclick = function () { window.location.reload() };
 
 
 //------- DADOS -------
