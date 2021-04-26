@@ -5,14 +5,14 @@
  *
  * 	O LocaliZAZ é uma biblioteca JavaScript para listar estados, cidades e
  * aeroportos brasileiros, juntamente com seus códigos numéricos, segundo o
- * IBGE.
+ * IBGE, em formulários HTML.
  * 	Além desses recursos, há também a busca de dados por CEP, através da API
  * ViaCEP - https://viacep.com.br/.
  *
  *	Copyright (C) 2021	Thales Marcel Souza Silva
  *
  * 	Este programa é um software livre; você pode redistribuí-lo e/ou modificá-lo
- * sob os termos da GNU General Public License conforme publicada pela Free
+ * sob os termos da GNU General Public License, conforme publicada pela Free
  * Software Foundation; versão 3 da licença, ou (à sua escolha) qualquer versão
  * posterior.
  *
@@ -43,8 +43,7 @@
  * 	Adição de comentários com explicações mais detalhadas sobre as funções e
  * constantes.
  *
- * 	Criação de funções separadas para o preenchimento dos inputs de código IBGE
- * de estados, cidades, e código IATA de aeroportos. (em andamento...).
+ * 	Criação de função separada para o preenchimento do seletor de aeroportos.
  *
  * 	Organização dos arrays contendo os dados de estados, cidades e aeroportos em
  * arquivos JSON separados, para maior legibilidade e facilidade de atualização
@@ -255,10 +254,10 @@ function inicializa_CEP() {
 		console.log('[JS] LocaliZAZ - v2.0.1.0: Fieldset BuscaCEP e caixa de texto CEP presentes na página');
 	} else {
 		if(!_BuscaCEP) {
-			console.warn('[JS] LocaliZAZ - v2.0.1.0: STATUS [AVISO: O fieldset BuscaCEP não está presente no código HTML da página. Verifique se o ID informado na constante "fieldset_cep" está correto, caso pretenda testar o recurso de busca por CEP.]');
+			console.warn('[JS] LocaliZAZ - v2.0.1.0: STATUS [AVISO: O fieldset BuscaCEP não está presente no código HTML da página. Verifique se o ID informado na constante "fieldset_cep" está correto, caso pretenda utilizar o recurso de busca por CEP.]');
 		}
 		if(!_cep) {
-			console.warn('[JS] LocaliZAZ - v2.0.1.0: STATUS [AVISO: A caixa de texto de CEP não está presente no código HTML da página. Verifique se o ID informado na constante "input_cep" está correto, caso pretenda testar o recurso de busca por CEP.]');
+			console.warn('[JS] LocaliZAZ - v2.0.1.0: STATUS [AVISO: A caixa de texto de CEP não está presente no código HTML da página. Verifique se o ID informado na constante "input_cep" está correto, caso pretenda utilizar o recurso de busca por CEP.]');
 		}
 	}
 }
@@ -306,6 +305,40 @@ window.onload = function () { inicializa() };
 window.onbeforeunload = function () { _formulario.reset() };
 
 
+/**
+ * 	Se o seletor de aeroportos estiver presente no formulário, ele é preenchido
+ * conforme o Estado e a cidade selecionados.
+*/
+function altera_Aeroportos(estado_selecionado) {
+	_aeroporto.innerHTML = ""; /** limpa as opções do seletor de aeroportos */
+
+	/**
+	 * 	Se o valor do Estado selecionado for válido, o seletor de aeroportos
+	 * recebe a lista de opções correspondente.
+	*/
+	if (_estado[estado_selecionado].value)
+		for (var iata in cod_iata[estado_selecionado]) {
+			/**
+			 * 	Se o seletor de cidades estiver presente na página, e a cidade
+			 * selecionada for diferente da cidade presente em "cod_iata" na
+			 * iteração atual, o laço for avança para a próxima iteração sem fazer
+			 * nada.
+			*/
+			if(_cidade && cod_iata[estado_selecionado][iata][0] !== _cidade.value) {
+				continue;
+			} else {
+				/**
+				 * Caso os valores das cidades em "cod_iata" e "_cidade" sejam
+				 * coincidentes, o laço ocorre normalmente.
+				*/
+				let iat = document.createElement("option");
+				iat.text = cod_iata[estado_selecionado][iata][1] + " - " + cod_iata[estado_selecionado][iata][2];
+				iat.value = cod_iata[estado_selecionado][iata][2];
+				_aeroporto.appendChild(iat);
+			}
+		}
+}
+
 /** Preenche as entradas do formulário, de acordo com o Estado selecionado */
 function altera_Estado() {
 	/** Índice do estado selecionado no array "estados" */
@@ -343,21 +376,7 @@ function altera_Estado() {
 	/**
 	 * 	Se o seletor de aeroportos estiver presente no formulário, ele é
 	 * preenchido conforme o Estado selecionado. */
-	if (_aeroporto) {
-		_aeroporto.innerHTML = ""; /** limpa as opções do seletor de aeroportos */
-
-		/**
-		 * 	Se o valor do Estado selecionado for válido, o seletor de aeroportos
-		 * recebe a lista de opções correspondente.
-		*/
-		if (_estado[estado_selecionado].value)
-			for (var iata in cod_iata[estado_selecionado]) {
-				let iat = document.createElement("option");
-				iat.text = cod_iata[estado_selecionado][iata][1] + " - " + cod_iata[estado_selecionado][iata][2];
-				iat.value = cod_iata[estado_selecionado][iata][2];
-				_aeroporto.appendChild(iat);
-			}
-	}
+	if(_aeroporto)	altera_Aeroportos(estado_selecionado);
 }
 
 /**
@@ -382,23 +401,11 @@ function altera_Cidade() {
 		_cod_cidade.value = cod_ibge_cidades[estado_selecionado][cidade_selecionada];
 
 	/**
-	 * 	Quando uma nova opção é escolhida no seletor de cidade, após uma troca de
-	 * opção no seletor de Estado, o seletor de aeroportos passa a exibir como
-	 * opções apenas os aeroportos existentes na cidade escolhida.
+	 * 	Quando o seletor de cidade está presente no formulário, o seletor de
+	 * aeroportos passa a exibir como opções apenas o(s) aeroporto(s) existente(s)
+	 * na cidade selecionada.
 	*/
-	if (_aeroporto) {
-		_aeroporto.innerHTML = ""; /** limpa as opções do seletor de aeroportos */
-
-		for (var iata in cod_iata[estado_selecionado]) {
-			let iat = document.createElement("option");
-			iat.text = cod_iata[estado_selecionado][iata][1] + " - " + cod_iata[estado_selecionado][iata][2];
-			iat.value = cod_iata[estado_selecionado][iata][2];
-			if (cod_iata[estado_selecionado][iata][0] == _cidade.value) {
-				console.log(cod_iata[estado_selecionado][iata][0]);
-				_aeroporto.appendChild(iat);
-			}
-		}
-	}
+	if(_aeroporto)	altera_Aeroportos(estado_selecionado);
 }
 
 /**

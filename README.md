@@ -1,17 +1,15 @@
 # LocaliZAZ.js
 
-O LocaliZAZ é feito totalmente em JavaScript, e permite que o programador adquira dados básicos e realmente necessários de Estados e cidades (incluindo seus códigos IBGE), Códigos IATA de aeroportos e Códigos Postais (com detalhes como logradouro, bairro, IAG/ICMS da cidade, entre outros).
+O LocaliZAZ é feito totalmente em JavaScript, e permite que o programador adquira dados básicos e realmente necessários de Estados, cidades (incluindo seus códigos IBGE), aeroportos (e seus códigos IATA) e CEPs (com detalhes como logradouro, bairro, IAG/ICMS da cidade, entre outros) para uso em formulários HTML.
 
 ## ``` ESTE É UM FORK DO PROJETO ORIGINAL!!!```
 
 ### Tarefas já realizadas neste fork:
 - Reorganização das funções de preenchimento dos elementos de formulário;
-- Adição de comentários com explicações mais detalhadas sobre as funções e constantes.
+- Adição de comentários com explicações mais detalhadas sobre as funções e constantes;
+- Criação de função separada para o preenchimento do seletor de aeroportos.
 
 ### Tarefas em andamento neste fork:
-- Criação de funções separadas para o preenchimento dos inputs de código IBGE de estados, cidades, e código IATA de aeroportos.
-
-### Próximas tarefas a serem realizadas neste fork:
 - Organização dos arrays contendo os dados de estados, cidades, aeroportos, códigos IBGE e códigos IATA em arquivos JSON separados, para maior legibilidade e facilidade de atualização de dados;
 - Adequação das funções para uso dos arrays mencionados anteriormente em formato JSON.
 
@@ -22,10 +20,12 @@ Testado, o mesmo roda em navegadores **IE 8+**. Verifique a compatibilidade do s
 
 ## Funcionalidades:
 - Listas de:
-  - Estados.
-  - Cidades por Estado.
-  - Códigos IBGE de Estados e cidades.
-  - Códigos IATA de aeroportos.
+  - Estados;
+  - Cidades por Estado;
+  - Aeroportos por Estado;
+  - Aeroportos por Cidade;
+  - Códigos IBGE de Estados e cidades;
+  - Códigos IATA de aeroportos;
 - Dados relativos à Códigos Postais (CEP).
 
 
@@ -43,7 +43,7 @@ const fieldset_cep = "BuscaCEP"; /** Valor original: "BuscaCEP" */
 const input_cep = "cep"; /** Valor original: "cep" */
 ```
 
-Cabe ao desenvolvedor definir como processar os dados obtidos com este script.
+```Cabe ao desenvolvedor definir como processar os dados obtidos com este script.```
 
 ### RETORNO DOS DADOS DE CEP
 Utilizamos a API do [ViaCEP](https://viacep.com.br/) junto dos dados do LocaliZAZ para retornar as informações sobre os códigos postais.
